@@ -1,0 +1,138 @@
+Abduct	0
+Accede to requests or demands for political reform- not specified below	1
+Accuse- not specified below	2
+Acknowledge or claim responsibility	3
+Allow international involvement- not specified below	4
+Apologize	5
+Appeal for aid- not specified below	6
+Appeal for diplomatic cooperation (such as policy support)	7
+Appeal for material cooperation- not specified below	8
+Appeal for political reform- not specified below	9
+Appeal to engage in or accept mediation	10
+Appeal to others to meet or negotiate	11
+Appeal to others to settle dispute	12
+Appeal to yield- not specified below	13
+Arrest	14
+Assassinate	15
+Attempt to assassinate	16
+Bring lawsuit against	17
+Coerce- not specified below	18
+Complain officially	19
+Conduct hunger strike- not specified below	20
+Conduct strike or boycott- not specified below	21
+Conduct suicide	22
+Consider policy option	23
+Consult- not specified below	24
+Cooperate economically	25
+Cooperate militarily	26
+Criticize or denounce	27
+De-escalate military engagement	28
+Decline comment	29
+Defend verbally	30
+Defy norms	31
+Demand diplomatic cooperation (such as policy support)	32
+Demand material aid- not specified below	33
+Demand material cooperation- not specified below	34
+Demand meeting	35
+Demand political reform- not specified below	36
+Demand settling of dispute	37
+Demand that target yields- not specified below	38
+Demand- not specified below	39
+Demonstrate military or police power- not specified below	40
+Demonstrate or rally- not specified below	41
+Deny responsibility	42
+Disapprove- not specified below	43
+Discuss by telephone	44
+Ease administrative sanctions- not specified below	45
+Ease economic sanctions	46
+Ease political dissent	47
+Employ aerial weapons- not specified below	48
+Engage in diplomatic cooperation- not specified below	49
+Engage in ethnic cleansing	50
+Engage in judicial cooperation	51
+Engage in mass expulsion	52
+Engage in mass killings	53
+Engage in material cooperation- not specified below	54
+Engage in negotiation	55
+Engage in political dissent- not specified below	56
+Engage in symbolic act	57
+Expel or deport individuals	58
+Expel or withdraw- not specified below	59
+Express accord	60
+Express intent to accept mediation	61
+Express intent to cooperate- not specified below	62
+Express intent to engage in diplomatic cooperation (such as policy support)	63
+Express intent to engage in material cooperation- not specified below	64
+Express intent to institute political reform- not specified below	65
+Express intent to mediate	66
+Express intent to meet or negotiate	67
+Express intent to provide material aid- not specified below	68
+Express intent to settle dispute	69
+Express intent to yield- not specified below	70
+Fight with artillery and tanks	71
+Fight with small arms and light weapons	72
+Find guilty or liable (legally)	73
+Forgive	74
+Give ultimatum	75
+Grant asylum	76
+Grant diplomatic recognition	77
+Halt negotiations	78
+Host a visit	79
+Impose administrative sanctions- not specified below	80
+Impose blockade	81
+Impose embargo	82
+Increase military alert status	83
+Increase police alert status	84
+Investigate crime	85
+Investigate human rights abuses	86
+Investigate military action	87
+Investigate war crimes	88
+Investigate- not specified below	89
+Make a visit	90
+Make an appeal or request- not specified below	91
+Make empathetic comment	92
+Make optimistic comment	93
+Make pessimistic comment	94
+Make statement- not specified below	95
+Mediate	96
+Meet at a ”third” location	97
+Mobilize or increase armed forces	98
+Mobilize or increase police power	99
+Obstruct passage	100
+Occupy territory	101
+Physically assault- not specified below	102
+Praise or endorse	103
+Protest violently	104
+Provide aid- not specified below	105
+Provide economic aid	106
+Provide humanitarian aid	107
+Provide military aid	108
+Provide military protection or peacekeeping	109
+Rally opposition against	110
+Rally support on behalf of	111
+Reduce or break diplomatic relations	112
+Reduce or stop material aid- not specified below	113
+Reduce relations- not specified below	114
+Refuse to yield- not specified below	115
+Reject material cooperation	116
+Reject plan	117
+Reject proposal to meet	118
+Reject request or demand for material aid- not specified below	119
+Reject request or demand for political reform- not specified below	120
+Reject- not specified below	121
+Return	122
+Seize or damage property- not specified below	123
+Share intelligence or information	124
+Sign formal agreement	125
+Threaten non-force- not specified below	126
+Threaten to halt negotiations	127
+Threaten with military force- not specified below	128
+Threaten with political dissent	129
+Threaten with repression	130
+Threaten- not specified below	131
+Use conventional military force- not specified below	132
+Use tactics of violent repression	133
+Use unconventional violence- not specified below	134
+Veto	135
+Violate ceasefire	136
+Yield- not specified below	137
