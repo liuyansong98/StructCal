@@ -1,0 +1,39 @@
+tokenizer_name_or_path: "./modelscope_cache/Qwen/Qwen2.5-7B-Instruct/"
+
+# ICEWS18_divide
+data_root: "./data/dataset"
+data_name: "ICEWS18_divide"
+data_file_path: "./data/dataset/ICEWS18_divide/train_arc_h10.jsonl"
+relation2id: "./data/dataset/ICEWS18_divide/relation2id.json"
+entity2id: "./data/dataset/ICEWS18_divide/entity2id.json"
+id2relation: "./data/dataset/ICEWS18_divide/id2relation.json"
+id2entity: "./data/dataset/ICEWS18_divide/id2entity.json"
+# test_result: "./data/dataset/ICEWS18_divide/test_result.npy"
+train_result: "./data/dataset/ICEWS18_divide/train_result.npy"
+num_relations: 256
+start_idx: 0
+
+device: "cuda"
+
+log_dir: "./log/reward"
+log_file: "reward_ice18.log"
+path_split_identifier: "\n"
+
+# Current active reward settings
+format_error: 1
+format_correct: 0.5
+invalid_entity_hard_threshold: 8
+
+tkgr_gain: 10
+outcome_error: 0.0
+pred_reward_abs_topk: 30
+pred_reward_abs_gain: 0.5
+pred_reward_gain: 4.0
+pred_reward_keep: 0.05
+llm_gain: 10
+outcome_correct: 0.0
+outcome_linear: 10.0
+interaction_round: 3
+interaction_round_mismatch_penalty: 0.5
+
+stage: "pred" # "cold" or "pred"
