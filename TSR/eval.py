@@ -413,14 +413,6 @@ def eval_one_epoch(model, all_nodes_l, src, dst, ts, e_idx_l, val_bs_idx, args, 
                     ob_pred_comp2 = (tmp_score == pred_ground).data.cpu().numpy()
                     target_rank_i = np.sum(ob_pred_comp1) + ((np.sum(ob_pred_comp2) - 1.0) / 2) + 1
                     ranks.append(target_rank_i)
-                    if stage != "train":
-                        tmp_score_his = score_hisEnh[i]
-                        pred_ground_his = tmp_score_his[dst_l_cut[i]]
-                        ob_pred_comp1_his = (tmp_score_his > pred_ground_his).data.cpu().numpy()
-                        ob_pred_comp2_his = (tmp_score_his == pred_ground_his).data.cpu().numpy()
-                        target_rank_his_i = np.sum(ob_pred_comp1_his) + ((np.sum(ob_pred_comp2_his) - 1.0) / 2) + 1
-                    else:
-                        target_rank_his_i = None
                     attn_entropy_i = compute_attention_entropy(attn_output_weights[i].detach().cpu().numpy())
                     path_tail_ids = extract_path_tails_from_subgraph(subgraph_src, i)
                     path_tail_set = set(path_tail_ids)
@@ -461,7 +453,6 @@ def eval_one_epoch(model, all_nodes_l, src, dst, ts, e_idx_l, val_bs_idx, args, 
                         "dst": int(dst_l_cut[i]),
                         "ts": int(ts_l_cut[i]),
                         "raw_rank": float(target_rank_i),
-                        "raw_rank_his_enh": float(target_rank_his_i) if target_rank_his_i is not None else None,
                         "time_aware_rank": None,
                         "time_aware_rank_his_enh": None,
                         "time_unaware_rank": None,
@@ -482,52 +473,6 @@ def eval_one_epoch(model, all_nodes_l, src, dst, ts, e_idx_l, val_bs_idx, args, 
                         "any_top10_in_path": int(top10_overlap_count > 0),
                         "target_in_path": int(int(dst_l_cut[i]) in path_tail_set),
                     })
-                    if case_study:
-                        subgraph_src1, subgraph_src2, subgraph_src3 = subgraph_src
-                        node_records1, eidx_records1, t_records1 = subgraph_src1
-                        node_records2, eidx_records2, t_records2 = subgraph_src2
-                        node_records3, eidx_records3, t_records3 = subgraph_src3
-                        path_num1 = eidx_records1.shape[1]
-                        path_num2 = eidx_records2.shape[1]
-                        path_num3 = eidx_records3.shape[1]
-                        if target_rank_i>10:
-                            # 写入case study的文件
-                            # 保存格式： H@{};s,r,?,t;path1(edge);path1(t);path1(node);path2(edge);path2(t);path2(node);path3(edge);path3(t);path3(node)
-                            tmp_str = f"\ntarget_rank:{target_rank_i};\t ({id2entity[src_l_cut[i]]};{id2rel[e_l_cut[i]]};{id2entity[dst_l_cut[i]]};{str(ts_l_cut[i])})\n"
-                            assert model_path != "", "case study输出文件地址错误！："+model_path
-
-                            attn_output_weights_i = attn_output_weights[i].tolist()
-                            # max_val_lis = heapq.nlargest(10, attn_output_weights_i)
-                            max_val_lis = heapq.nlargest(10, list(set(attn_output_weights_i)))
-                            max_idx_lis = []
-                            for item in max_val_lis:
-                                idx = attn_output_weights_i.index(item)
-                                max_idx_lis.append(idx)
-                                path_score = str(float(attn_output_weights_i[idx]))
-                                attn_output_weights_i[idx] = float('-inf')
-                                if idx < path_num1:
-                                    tmp_str += "path(rel(time)->tail):" + id2rel.get(int(eidx_records1[i,idx,1]),str(int(eidx_records1[i,idx,1]))) + "(" + str(int(t_records1[i,idx,1])) + ")" + "->" + id2entity.get(int(node_records1[i,idx,1]), str(int(node_records1[i,idx,1]))) +"  path score: " + path_score + "\n"
-                                elif path_num1 <= idx < path_num1+path_num2:
-                                    idx = idx-path_num1
-                                    x = eidx_records2[i,idx,1]
-                                    y = eidx_records2[i,idx,2]
-                                    z = node_records2[i,idx,1]
-                                    tmp_str += "rel_path:" + id2rel.get(int(eidx_records2[i,idx,1]),str(int(eidx_records2[i,idx,1]))) + "(" + str(int(t_records2[i,idx,1])) + ")" + "->" +  id2entity.get(int(node_records2[i,idx,1]), str(int(node_records2[i,idx,1]))) + \
-                                               "->" + id2rel.get(int(eidx_records2[i,idx,2]),str(int(eidx_records2[i,idx,2]))) + "(" + str(int(t_records2[i,idx,2])) + ")" + "->" +  id2entity.get(int(node_records2[i,idx,2]), str(int(node_records2[i,idx,2]))) + \
-                                               "  path score: " + path_score + "\n"
-                                else:
-                                    idx = idx - path_num1 - path_num2
-                                    tmp_str += "rel_path:" + id2rel.get(int(eidx_records3[i,idx,1]),str(int(eidx_records3[i,idx,1]))) + "(" + str(int(t_records3[i,idx,1])) + ")" + "->" +  id2entity.get(int(node_records3[i,idx,1]), str(int(node_records3[i,idx,1]))) + \
-                                               "->" + id2rel.get(int(eidx_records3[i,idx,2]),str(int(eidx_records3[i,idx,2]))) + "(" + str(int(t_records3[i,idx,2])) + ")" + "->" +  id2entity.get(int(node_records3[i,idx,2]), str(int(node_records3[i,idx,2]))) + \
-                                               "->" + id2rel.get(int(eidx_records3[i, idx, 3]), str(int(eidx_records3[i, idx, 3]))) + "(" + str(int(t_records3[i, idx, 3])) + ")" + "->" + id2entity.get(int(node_records3[i, idx, 3]), str(int(node_records3[i, idx, 3]))) + \
-                                               "  path score: " + path_score + "\n"
-
-                            tmp_str += "top3 entity:"
-                            for e_id in top3_indices:
-                                tmp_str += f"{id2entity[int(e_id)]},"
-                            tmp_str += "\n"
-                            with open(os.path.dirname(model_path) + "/case_study_id.txt", "a") as file:
-                                file.write(tmp_str)
 
                 testSet_raw_rank.extend(ranks)
                 batch_rank_raw.extend(ranks)
@@ -577,24 +522,6 @@ def eval_one_epoch(model, all_nodes_l, src, dst, ts, e_idx_l, val_bs_idx, args, 
                         time_aware_ranks.append(target_rank_i)
                         rank_entropy_records[-len(src_l_cut) + j]["time_aware_rank"] = float(target_rank_i)
 
-                    if stage != "train":
-                        time_aware_score_his = score_hisEnh.clone()
-                        target_score_his = score_hisEnh[b_range, dst_l_cut]
-                        for j in range(len(src_l_cut)):
-                            if "social" in args.data and args.data != "social_TKG_cate_level1_filter_discr1h":
-                                time_aware_score_his[j][srt2o[(src_l_cut[j], e_l_cut[j], ts_l_cut[j] // 3600)]] = -10000000
-                            else:
-                                time_aware_score_his[j][srt2o[(src_l_cut[j], e_l_cut[j], ts_l_cut[j])]] = -10000000
-                        time_aware_score_his[b_range, dst_l_cut] = target_score_his
-
-                        for j in range(len(src_l_cut)):
-                            tmp_score = time_aware_score_his[j]
-                            pred_ground = tmp_score[dst_l_cut[j]]
-                            ob_pred_comp1 = (tmp_score > pred_ground).data.cpu().numpy()
-                            ob_pred_comp2 = (tmp_score == pred_ground).data.cpu().numpy()
-                            target_rank_his_i = np.sum(ob_pred_comp1) + ((np.sum(ob_pred_comp2) - 1.0) / 2) + 1
-                            rank_entropy_records[-len(src_l_cut) + j]["time_aware_rank_his_enh"] = float(target_rank_his_i)
-
                     testSet_time_rank.extend(time_aware_ranks)
                     batch_rank_time.extend(time_aware_ranks)
                     for j in range(len(time_aware_ranks)):
@@ -638,12 +565,6 @@ def eval_one_epoch(model, all_nodes_l, src, dst, ts, e_idx_l, val_bs_idx, args, 
                         t_results_static['hits@{}_time_uf'.format(j + 1)] = torch.numel(time_unaware_ranks[time_unaware_ranks <= (j + 1)]) + t_results_static.get(
                             'hits@{}_time_uf'.format(j + 1), 0.0)
 
-                # 更新历史记录
-                for i in range(len(src_l_cut)):
-                    idx = src_l_cut[i] * 2 * num_r + e_l_cut[i]
-                    if idx not in history_entity_ARC_dic_copy:
-                        history_entity_ARC_dic_copy[idx] = ARCCache1(capacity)
-                    history_entity_ARC_dic_copy[idx].put(dst_l_cut[i], ts_l_cut[i])
                 model.ngh_finder.update_node_degree(src_l_cut, dst_l_cut)
             mrr_raw_list.append(np.mean(1/np.array(batch_rank_raw)))
             if is_need_filter:
